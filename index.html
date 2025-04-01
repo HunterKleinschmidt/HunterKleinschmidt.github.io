@@ -724,20 +724,30 @@
 	$(document).ready(function() {
 	   $('#contactForm').submit(function(e) {
 		  e.preventDefault();
+		  // Hide both messages before starting
+		  $('#message-warning').hide();
+		  $('#message-success').hide();
 		  $('#submit-loader').show();
+ 
 		  $.ajax({
 			 url: 'https://formspree.io/f/mldjprkl',
 			 method: 'POST',
 			 data: $(this).serialize(),
 			 dataType: 'json',
-			 success: function() {
-				$('#submit-loader').hide();
-				$('#message-success').show();
-				$('#contactForm')[0].reset();
+			 headers: {
+				'Accept': 'application/json'
 			 },
-			 error: function() {
+			 complete: function(xhr) {
 				$('#submit-loader').hide();
-				$('#message-warning').show();
+				// Check status code instead of success/error
+				if (xhr.status === 200) {
+				   $('#message-success').show();
+				   $('#contactForm')[0].reset();
+				} else {
+				   $('#message-warning').html('Oops! Something went wrong (Status: ' + xhr.status + '). Please try again or email me directly.');
+				   $('#message-warning').show();
+				}
+				console.log('Response:', xhr.status, xhr.responseText); // Debug
 			 }
 		  });
 	   });
