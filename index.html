@@ -722,9 +722,11 @@
    <script src="js/main.js"></script>
    <script>
 	$(document).ready(function() {
-	   $('#contactForm').submit(function(e) {
+	   // Remove any existing submit handlers from main.js
+	   $('#contactForm').off('submit');
+	   
+	   $('#contactForm').on('submit', function(e) {
 		  e.preventDefault();
-		  // Hide both messages before starting
 		  $('#message-warning').hide();
 		  $('#message-success').hide();
 		  $('#submit-loader').show();
@@ -737,17 +739,18 @@
 			 headers: {
 				'Accept': 'application/json'
 			 },
-			 complete: function(xhr) {
+			 success: function(data) {
 				$('#submit-loader').hide();
-				// Check status code instead of success/error
-				if (xhr.status === 200) {
-				   $('#message-success').show();
-				   $('#contactForm')[0].reset();
-				} else {
-				   $('#message-warning').html('Oops! Something went wrong (Status: ' + xhr.status + '). Please try again or email me directly.');
-				   $('#message-warning').show();
-				}
-				console.log('Response:', xhr.status, xhr.responseText); // Debug
+				$('#message-success').show();
+				$('#contactForm')[0].reset();
+			 },
+			 error: function(xhr) {
+				$('#submit-loader').hide();
+				$('#message-warning').html('Oops! Something went wrong. Please try again or email me directly.');
+				$('#message-warning').show();
+			 },
+			 complete: function(xhr) {
+				console.log('Status:', xhr.status, 'Response:', xhr.responseText);
 			 }
 		  });
 	   });
