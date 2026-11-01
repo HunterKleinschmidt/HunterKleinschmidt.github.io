@@ -8,12 +8,12 @@
 <p>I’ve spent most of the last two years building the systems that prove this.</p>
 <h2 id="two-systems-the-company-runs-on">Two systems the company runs on</h2>
 <h3 id="workforce-quality-assurance">Workforce quality assurance</h3>
-<p>I designed and built, and still own, the primary quality assurance system for a large provider workforce. It runs against the entire population, not a sample.</p>
+<p>I designed, and still own the logic of, the primary quality assurance system for a large provider workforce. Data engineering and product partners built it into production with me. It runs against the entire population, not a sample.</p>
 <ul>
 <li>Every provider’s activity is evaluated against the company’s quality standards on a regular schedule.</li>
 <li>When something goes wrong, like a missed session or negative patient feedback, an AI investigator reads that provider’s full relationship history (messages, calls, notes, care plans, support tickets) and writes up the evidence. A human doing this would skim. The model reads everything, every time.</li>
 <li>Issues become flags. At three flags, the system issues a strike automatically, and a person reviews it before it stands.</li>
-<li>I own the decision logic, the investigator prompts, and the exemptions, and I’ve led it through three major versions.</li>
+<li>I own the decision logic, the investigator prompts, and the exemptions, and I’ve led that logic through three major versions.</li>
 </ul>
 <p>Before this existed, the work took a team of reviewers and still only covered the cases someone had time for. Now every case gets the full read.</p>
 <h3 id="billing-integrity">Billing integrity</h3>
@@ -27,7 +27,7 @@
 <li><strong>Model choice on evidence.</strong> I reclassified the full submission history with candidate models and picked the winner through blind adjudication. The faster model also won most of the disputes.</li>
 <li><strong>Validated against experts.</strong> Operations reviewers checked its calls, agreed strongly, and endorsed every escalation.</li>
 </ul>
-<p>It later moved upstream into real-time checks that catch problems before a timesheet is even submitted. I wrote the detection plan, thresholds, data contract, and test cases that engineering built from.</p>
+<p>It later moved upstream into real-time checks that catch problems before a timesheet is even submitted. I was the data scientist on it, start to finish. When it moved into production, I wrote the detection plan, thresholds, data contract, and test cases, and oversaw the engineers who built it into the backend.</p>
 <h2 id="why-consistent-beats-careful">Why consistent beats careful</h2>
 <p>AI does make mistakes. The advantage isn’t that it’s always right. It’s that its mistakes are consistent, so you can find a cause and fix it once, for every future case.</p>
 <p>When human reviewers disagree, there’s no code to fix. You retrain, re-audit, and hope. When a model is wrong, it’s wrong the same way every time, so the pattern shows up in the data. Three real examples:</p>
@@ -52,7 +52,7 @@
 <ul>
 <li><strong>Silent stalls.</strong> One batch pipeline stopped writing results for about two weeks, and nothing alerted. Now long jobs report a heartbeat, have hard timeouts, and resume where they stopped.</li>
 <li><strong>Measurement that lies.</strong> One system looked several times less effective than it was, because of how detections were counted. The dashboard was wrong, not the AI.</li>
-<li><strong>AI judging AI.</strong> When AI helps write the notes that other AI checks, the baseline can drift. If generated notes get more uniform, the detector’s idea of “normal” moves with them. I built monitoring for exactly that.</li>
+<li><strong>AI judging AI.</strong> When AI helps write the notes that other AI checks, the baseline can drift. If generated notes get more uniform, the detector’s idea of “normal” moves with them. I designed monitoring for exactly that.</li>
 <li><strong>Outages.</strong> Retries, backoff and resumable runs for anything that matters.</li>
 </ul>
 <h2 id="if-youre-building-this">If you’re building this</h2>
