@@ -73,10 +73,17 @@
       <stop offset="1" stop-color="#c2a676" />
     </linearGradient>
     <g id="ne-cloud">
-      <ellipse cx="0" cy="0" rx="46" ry="16" fill="#fffaf0" />
-      <ellipse cx="-22" cy="-8" rx="24" ry="16" fill="#fffaf0" />
-      <ellipse cx="14" cy="-14" rx="28" ry="20" fill="#fffaf0" />
-      <ellipse cx="38" cy="-4" rx="18" ry="12" fill="#fffaf0" />
+      <path d="M-60 8 Q-64 -6 -48 -10 Q-48 -28 -28 -27 Q-20 -46 2 -42 Q18 -58 38 -40 Q58 -44 62 -22 Q78 -18 74 -2 Q76 8 64 8 Z" fill="#fffaf3" />
+      <path d="M-38 -18 Q-26 -30 -10 -24 Q0 -38 16 -32" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.9" />
+      <path d="M-60 8 Q-30 -1 2 3 Q36 -3 74 2 Q76 8 64 8 Z" fill="#e3e9f2" />
+    </g>
+    <g id="ne-tree">
+      <rect x="-1.5" y="-4" width="3" height="10" fill="#5b4632" />
+      <circle cx="0" cy="-12" r="10" fill="#3f5f2a" />
+      <circle cx="-7" cy="-7" r="7" fill="#4a6d30" />
+      <circle cx="7" cy="-8" r="7.5" fill="#4a6d30" />
+      <circle cx="-2" cy="-17" r="6.5" fill="#5d8238" />
+      <circle cx="4" cy="-14" r="4" fill="#6f9442" />
     </g>
   </defs>
 
@@ -96,49 +103,82 @@
 
   <!-- town on the horizon -->
   <g>
-    <!-- tree line -->
-    <g fill="#58743a">
-      <circle cx="40" cy="532" r="13" /><circle cx="58" cy="528" r="15" /><circle cx="76" cy="533" r="11" />
-      <circle cx="232" cy="530" r="12" /><circle cx="248" cy="526" r="14" />
-      <circle cx="452" cy="531" r="12" /><circle cx="470" cy="527" r="15" /><circle cx="490" cy="532" r="12" />
-    </g>
-    <!-- grain elevator -->
+    <!-- shelterbelts and yard trees -->
+    <use href="#ne-tree" transform="translate(28 536) scale(1.15)" />
+    <use href="#ne-tree" transform="translate(46 533) scale(1.35)" />
+    <use href="#ne-tree" transform="translate(66 537) scale(1.05)" />
+    <use href="#ne-tree" transform="translate(82 538) scale(0.85)" />
+    <use href="#ne-tree" transform="translate(240 536) scale(1.0)" />
+    <use href="#ne-tree" transform="translate(254 534) scale(1.2)" />
+    <use href="#ne-tree" transform="translate(344 537) scale(0.9)" />
+    <use href="#ne-tree" transform="translate(412 537) scale(0.95)" />
+    <use href="#ne-tree" transform="translate(456 535) scale(1.2)" />
+    <use href="#ne-tree" transform="translate(474 533) scale(1.4)" />
+    <use href="#ne-tree" transform="translate(494 537) scale(1.1)" />
+
+    <!-- grain elevator: four concrete silos and a headhouse -->
     <g>
-      <rect x="96" y="420" width="16" height="118" fill="#e7e1d3" />
-      <rect x="112" y="420" width="16" height="118" fill="#d9d2c1" />
-      <rect x="128" y="420" width="16" height="118" fill="#e7e1d3" />
-      <rect x="144" y="420" width="16" height="118" fill="#d9d2c1" />
-      <rect x="106" y="392" width="34" height="30" fill="#cfc7b4" />
-      <rect x="112" y="398" width="8" height="8" fill="#8a8473" />
-      <rect x="160" y="470" width="40" height="68" fill="#a65d3f" />
-      <path d="M158 470 L180 456 L202 470 Z" fill="#7d4430" />
-      <line x1="140" y1="402" x2="180" y2="460" stroke="#8a8473" stroke-width="2" />
+      <rect x="96" y="424" width="16" height="114" fill="#ebe6da" /><rect x="107" y="424" width="5" height="114" fill="#d5cebe" /><ellipse cx="104" cy="424" rx="8" ry="2.6" fill="#f5f1e8" />
+      <rect x="112" y="424" width="16" height="114" fill="#ebe6da" /><rect x="123" y="424" width="5" height="114" fill="#d5cebe" /><ellipse cx="120" cy="424" rx="8" ry="2.6" fill="#f5f1e8" />
+      <rect x="128" y="424" width="16" height="114" fill="#ebe6da" /><rect x="139" y="424" width="5" height="114" fill="#d5cebe" /><ellipse cx="136" cy="424" rx="8" ry="2.6" fill="#f5f1e8" />
+      <rect x="144" y="424" width="16" height="114" fill="#ebe6da" /><rect x="155" y="424" width="5" height="114" fill="#d5cebe" /><ellipse cx="152" cy="424" rx="8" ry="2.6" fill="#f5f1e8" />
+      <rect x="96" y="470" width="64" height="5" fill="#f8f5ef" />
+      <rect x="106" y="390" width="36" height="34" fill="#dfd8c8" /><rect x="133" y="390" width="9" height="34" fill="#c9c1af" />
+      <path d="M104 390 L124 382 L144 390 Z" fill="#a39c8c" />
+      <rect x="111" y="396" width="5" height="5" fill="#7d776a" /><rect x="121" y="396" width="5" height="5" fill="#7d776a" /><rect x="111" y="408" width="5" height="5" fill="#7d776a" />
+      <line x1="142" y1="400" x2="182" y2="458" stroke="#8a8473" stroke-width="2.2" />
+      <line x1="146" y1="396" x2="186" y2="454" stroke="#a39c8c" stroke-width="1" />
     </g>
-    <!-- water tower -->
-    <g stroke="#9aa3a8" stroke-width="2">
-      <line x1="300" y1="470" x2="292" y2="536" />
-      <line x1="326" y1="470" x2="334" y2="536" />
-      <line x1="313" y1="470" x2="313" y2="536" />
-      <line x1="295" y1="505" x2="331" y2="505" />
+
+    <!-- red barn with a gambrel roof -->
+    <g>
+      <rect x="162" y="480" width="40" height="58" fill="#b4462f" />
+      <rect x="190" y="480" width="12" height="58" fill="#983a27" />
+      <path d="M158 481 L166 465 L182 457 L198 465 L206 481 Z" fill="#6b2a1c" />
+      <path d="M158 481 L166 465 L182 457 L198 465 L206 481" fill="none" stroke="#f3ede2" stroke-width="1.2" />
+      <rect x="174" y="510" width="16" height="28" fill="none" stroke="#f3ede2" stroke-width="1.4" />
+      <path d="M174 510 L190 538 M190 510 L174 538" stroke="#f3ede2" stroke-width="1.1" />
+      <rect x="178" y="488" width="8" height="8" fill="#f3ede2" /><rect x="179.5" y="489.5" width="5" height="5" fill="#6b2a1c" />
     </g>
-    <ellipse cx="313" cy="458" rx="26" ry="18" fill="#c8d0d4" />
-    <path d="M287 458 Q313 442 339 458" fill="#b6bfc4" />
-    <rect x="311" y="430" width="4" height="12" fill="#9aa3a8" />
-    <text x="313" y="463" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif" font-size="7.5" font-weight="700" letter-spacing="0.6" fill="#4a5a66">NEBRASKA</text>
+
     <!-- church -->
     <g>
-      <rect x="208" y="498" width="22" height="40" fill="#f2ede2" />
-      <path d="M206 498 L219 486 L232 498 Z" fill="#6f6a60" />
-      <rect x="214" y="470" width="10" height="20" fill="#f2ede2" />
-      <path d="M212 470 L219 448 L226 470 Z" fill="#6f6a60" />
-      <line x1="219" y1="440" x2="219" y2="448" stroke="#6f6a60" stroke-width="1.5" />
-      <line x1="215" y1="443" x2="223" y2="443" stroke="#6f6a60" stroke-width="1.5" />
+      <rect x="208" y="500" width="24" height="38" fill="#f5f0e5" /><rect x="225" y="500" width="7" height="38" fill="#e2dccd" />
+      <path d="M205 501 L220 488 L235 501 Z" fill="#5e5a52" />
+      <rect x="214" y="472" width="12" height="28" fill="#f5f0e5" /><rect x="222" y="472" width="4" height="28" fill="#e2dccd" />
+      <rect x="217.5" y="477" width="5" height="7" rx="2.5" fill="#6b675e" />
+      <path d="M212 472 L220 446 L228 472 Z" fill="#5e5a52" />
+      <line x1="220" y1="438" x2="220" y2="446" stroke="#5e5a52" stroke-width="1.5" />
+      <line x1="216.5" y1="441" x2="223.5" y2="441" stroke="#5e5a52" stroke-width="1.5" />
+      <rect x="211" y="507" width="4" height="9" rx="2" fill="#a9bfd3" /><rect x="225" y="507" width="4" height="9" rx="2" fill="#a9bfd3" />
+      <rect x="217" y="524" width="6" height="14" rx="3" fill="#7a5a3e" />
     </g>
+
+    <!-- water tower -->
+    <g stroke="#8f999f" stroke-width="2">
+      <line x1="296" y1="472" x2="290" y2="538" />
+      <line x1="330" y1="472" x2="336" y2="538" />
+      <line x1="313" y1="478" x2="313" y2="538" />
+      <line x1="293" y1="502" x2="333" y2="502" stroke-width="1.4" />
+      <path d="M293 502 L334 530 M333 502 L292 530" stroke-width="1" fill="none" />
+    </g>
+    <path d="M289 470 Q313 488 337 470 Z" fill="#b9c2c7" />
+    <rect x="289" y="450" width="48" height="21" rx="2" fill="#d3dadd" />
+    <rect x="329" y="450" width="8" height="21" fill="#c1c9cd" />
+    <line x1="286" y1="470" x2="340" y2="470" stroke="#8f999f" stroke-width="1.6" />
+    <path d="M286 450 L313 433 L340 450 Z" fill="#a8b2b8" />
+    <line x1="313" y1="427" x2="313" y2="433" stroke="#8f999f" stroke-width="1.5" />
+    <text x="313" y="464" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif" font-size="7.5" font-weight="700" letter-spacing="0.6" fill="#3f4d57">NEBRASKA</text>
+
     <!-- houses -->
     <g>
-      <rect x="350" y="514" width="24" height="24" fill="#e9dcc2" /><path d="M347 514 L362 502 L377 514 Z" fill="#8c3b2e" />
-      <rect x="382" y="518" width="20" height="20" fill="#d8e0e2" /><path d="M380 518 L392 508 L404 518 Z" fill="#555a5e" />
-      <rect x="262" y="516" width="22" height="22" fill="#efe6d2" /><path d="M260 516 L273 505 L286 516 Z" fill="#6b4a33" />
+      <rect x="262" y="516" width="22" height="22" fill="#efe6d2" /><path d="M259 517 L273 505 L287 517 Z" fill="#6b4a33" />
+      <rect x="266" y="522" width="5" height="5" fill="#f4d98f" /><rect x="275" y="526" width="5" height="12" fill="#7a5a3e" />
+      <rect x="350" y="514" width="24" height="24" fill="#ebdec4" /><path d="M347 515 L362 502 L377 515 Z" fill="#8c3b2e" />
+      <rect x="366" y="500" width="4" height="9" fill="#8c3b2e" />
+      <rect x="354" y="520" width="5" height="5" fill="#f4d98f" /><rect x="365" y="520" width="5" height="5" fill="#f4d98f" /><rect x="359" y="528" width="5" height="10" fill="#6b4a33" />
+      <rect x="384" y="519" width="20" height="19" fill="#dbe2e4" /><path d="M381 520 L394 509 L407 520 Z" fill="#555a5e" />
+      <rect x="388" y="524" width="5" height="5" fill="#f4d98f" /><rect x="396" y="528" width="5" height="10" fill="#6d6f70" />
     </g>
   </g>
 
