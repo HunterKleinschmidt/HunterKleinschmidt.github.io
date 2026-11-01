@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en" class="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><title>Give analysts their thinking time back | Hunter Kleinschmidt</title><meta name="description" content="AI should take the grunt work, not the job, and put analysts back at the table."><meta property="og:title" content="Give analysts their thinking time back | Hunter Kleinschmidt"><meta property="og:description" content="AI should take the grunt work, not the job, and put analysts back at the table."><script>
+      const stored = localStorage.getItem('theme');
+      if (stored === 'light') document.documentElement.classList.remove('dark');
+    </script><link rel="stylesheet" href="/_astro/content.ePh_ubUe.css"></head><body class="font-sans"><div class="mx-auto max-w-[620px] px-6 pt-16 pb-24 sm:pt-24"><header class="mb-14 flex items-center justify-between font-mono text-[13px]"><a href="/" class="text-[var(--muted)] transition-colors hover:text-[var(--fg)]">@hunterkleinschmidt</a><nav class="flex items-center gap-5"><a href="/writing" class="transition-colors hover:text-[var(--fg)] text-[var(--fg)]">writing</a><a href="/built" class="transition-colors hover:text-[var(--fg)] text-[var(--muted)]">built</a><button id="theme-toggle" type="button" aria-label="Toggle light and dark mode" class="text-[var(--muted)] transition-colors hover:text-[var(--fg)]"><span class="dark:hidden">dark</span><span class="hidden dark:inline">light</span></button></nav></header><main><article><a href="/writing" class="font-mono text-[12px] text-[var(--faint)] transition-colors hover:text-[var(--fg)]">← writing</a><h1 class="mt-6 text-[28px] leading-tight font-medium tracking-tight">Give analysts their thinking time back</h1><p class="mt-3 font-mono text-[12px] text-[var(--faint)]">nov 2026 · essay · teams</p><div class="prose prose-neutral mt-10 max-w-none text-[16px] leading-[1.8]"><h2 id="how-are-you-so-fast">“How are you so fast?”</h2>
+<p>People at work ask me some version of this a lot. The honest answer is that I’ve never worked anywhere before AI. I’ve only known startups, and I picked up AI tools as soon as they were good enough to trust. So to me, my pace isn’t mystical. It’s just how the work gets done now.</p>
+<p>Here’s what that looks like. The two biggest systems I’ve built (a workforce quality assurance pipeline and a billing integrity pipeline) each had a working prototype within a week or two. Work that used to take me a week now takes a day. I’m not typing faster. AI writes the code, and I spend my time on the decisions.</p>
+<p>To be clear, a two-week prototype isn’t the finished product. Both systems took months of iteration, feedback and hard edge cases to become what the company runs on today. But the starting line has moved. When a working version takes two weeks instead of two quarters, the year after it goes to making it great instead of making it exist. I used to work at NASA, so I don’t use the word “moonshot” lightly. But give a team a year with these tools, and the ceiling is a lot higher than most people think. That’s the outlook I want my team to have.</p>
+<p>That’s the whole idea of this essay: give analysts that same trade. AI handles the grunt work, and the analyst gets their thinking time back.</p>
+<h2 id="humans-own-the-validation-layer">Humans own the validation layer</h2>
+<p>Here’s the workflow. AI builds a model in seconds. The analyst doesn’t go line by line troubleshooting syntax. They check what actually matters: the major logic decisions, the grain, the conventions, and whether the answer makes sense for the business. The AI builds. The human owns the validation layer.</p>
+<p>That doesn’t mean analysts don’t need to know how to code. I think it’s like math. Every mathematician spent a year doing long division by hand in grade school. No PhD mathematician gives up their calculator, but you also wouldn’t trust one who never learned division. They checked that box early, so they know when the calculator’s answer is wrong.</p>
+<p>Analysts are the same. An analyst who has never written a join can’t spot a bad one. Learn to write the code first. Then stop writing it, and start orchestrating the AI that does.</p>
+<h2 id="the-analyst-who-matters-is-the-one-at-the-table">The analyst who matters is the one at the table</h2>
+<p>The point of the time saved isn’t more tickets. It’s getting analysts into the rooms where product and business decisions get made. A data-led voice in those rooms is rare and very valuable: the person who asks “how would we know if this worked?” before launch, who sees that a proposed metric would misclassify half the population, who notices a dashboard is measuring the reporting process instead of the outcome.</p>
+<p>Some of my most useful work came from having room to think, not from writing more code:</p>
+<ul>
+<li>I noticed that a proposed pilot could only detect a very large effect. That let us redesign it with a holdout and a pre-registered plan, and showed that the real constraint was hiring volume.</li>
+<li>A capacity problem everyone read as “not enough people” turned out, when I modeled it, to be a distribution problem. That reframing became the team’s top priority.</li>
+<li>A program’s detection numbers looked weak. I traced it to how they were counted, and fixing the measurement changed how leadership read the whole program.</li>
+</ul>
+<p>None of that took clever code. It took slack in the week. The goal is to make that slack normal for every analyst.</p>
+<h2 id="how-to-give-it-back">How to give it back</h2>
+<ul>
+<li><strong>Self-service on governed data.</strong> When definitions live in a semantic layer and the team’s knowledge lives in a context layer, routine questions get answered without a ticket. (How I built those layers is in <a href="/writing/data-layer-three-layers">The data layer is three layers now</a>.)</li>
+<li><strong>Standards inside the tools.</strong> Verifying queries, scoping tickets, preparing pull requests and reviewing work are built into every analyst’s AI assistant, so a newer analyst’s work meets the team’s bar from their first week.</li>
+<li><strong>Protect the saved time.</strong> Freed-up hours fill with more tickets unless you point them at stakeholder work: sitting with the requester before the build, asking what decision the analysis is for, getting the right people into the room.</li>
+</ul>
+<h2 id="the-human-side-is-the-hard-side">The human side is the hard side</h2>
+<p>The tools are the easy part. The shift in how people work is the hard part.</p>
+<p>We’re in a strange transition. A lot of good analysts take real pride in solving and troubleshooting code by hand, and that pride is earned. Asking them to hand that to an AI can feel like being asked to give up the part of the job they’re best at. Willingness to work this way varies a lot from person to person.</p>
+<p>What works is a fast first win. I seeded our team’s context layer with months of prior work, so an analyst’s first AI session already knows their projects and their traps. The aha moment, when the assistant does in minutes what used to take an afternoon and gets it right because it knows the team’s history, does more than any announcement.</p>
+<p>I directly manage two analysts and coach others less formally. With all of them, I review reasoning more than code: why this grain, why this filter, what would make this answer wrong. One of the analysts I coach went from new to the team to the second-biggest contributor to our context layer within a few months.</p>
+<h2 id="measure-the-right-thing">Measure the right thing</h2>
+<p>When AI does the building, ticket counts stop meaning much. A day’s work can be one hard problem or twenty trivial ones. Measure the complexity of what the team takes on, and how often their work changes a decision. That’s the output that matters.</p>
+<h2 id="if-you-lead-analysts">If you lead analysts</h2>
+<ul>
+<li>Go first. Change your own workflow before asking anyone else to.</li>
+<li>Make sure analysts can write code, then free them from writing it.</li>
+<li>Put the human on the validation layer: logic, grain, conventions, business sense.</li>
+<li>Build self-service on governed metrics, never on raw tables.</li>
+<li>Engineer the first win. Adoption follows the aha moment.</li>
+<li>Measure complexity and impact, not ticket counts.</li>
+</ul>
+</div></article></main><footer class="mt-24 flex justify-between border-t border-[var(--line)] pt-6 font-mono text-[12px] text-[var(--faint)]"><span>hunterkleinschmidt.dev</span><a href="https://github.com/HunterKleinschmidt" class="transition-colors hover:text-[var(--fg)]">github</a></footer></div><script>
+      document.getElementById('theme-toggle')?.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      });
+    </script></body></html>

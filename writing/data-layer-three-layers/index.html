@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en" class="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><title>The data layer is three layers now | Hunter Kleinschmidt</title><meta name="description" content="Modeled data, governed metrics, and team context: what AI needs from a data team, and how AI builds it."><meta property="og:title" content="The data layer is three layers now | Hunter Kleinschmidt"><meta property="og:description" content="Modeled data, governed metrics, and team context: what AI needs from a data team, and how AI builds it."><script>
+      const stored = localStorage.getItem('theme');
+      if (stored === 'light') document.documentElement.classList.remove('dark');
+    </script><link rel="stylesheet" href="/_astro/content.ePh_ubUe.css"></head><body class="font-sans"><div class="mx-auto max-w-[620px] px-6 pt-16 pb-24 sm:pt-24"><header class="mb-14 flex items-center justify-between font-mono text-[13px]"><a href="/" class="text-[var(--muted)] transition-colors hover:text-[var(--fg)]">@hunterkleinschmidt</a><nav class="flex items-center gap-5"><a href="/writing" class="transition-colors hover:text-[var(--fg)] text-[var(--fg)]">writing</a><a href="/built" class="transition-colors hover:text-[var(--fg)] text-[var(--muted)]">built</a><button id="theme-toggle" type="button" aria-label="Toggle light and dark mode" class="text-[var(--muted)] transition-colors hover:text-[var(--fg)]"><span class="dark:hidden">dark</span><span class="hidden dark:inline">light</span></button></nav></header><main><article><a href="/writing" class="font-mono text-[12px] text-[var(--faint)] transition-colors hover:text-[var(--fg)]">← writing</a><h1 class="mt-6 text-[28px] leading-tight font-medium tracking-tight">The data layer is three layers now</h1><p class="mt-3 font-mono text-[12px] text-[var(--faint)]">nov 2026 · essay · data layer</p><div class="prose prose-neutral mt-10 max-w-none text-[16px] leading-[1.8]"><h2 id="i-came-to-data-sideways">I came to data sideways</h2>
+<p>I didn’t grow up in data. I worked at NASA, moved into tech, and spent three years running my own company before a data background landed me on a small startup data team. That path matters for this essay, because I didn’t arrive with ten years of habits about how a data team is supposed to work. I arrived scrappy, right as AI tools got good enough to change the answer.</p>
+<p>Here’s the problem I walked into. Point an AI agent at a raw production database and ask it a business question. It will write a clean query, run it, and hand you a confident answer. Often that answer is wrong. It picked the table engineering stopped writing to last year. It counted test accounts. It joined on a key that fans out. Nothing looked broken.</p>
+<p>That’s not the agent’s fault, and it’s not engineering’s fault either. Production databases are built to run an app, not to answer questions, and no engineer is perfect. Every raw schema is full of landmines, and the knowledge of where they are lives in a few analysts’ heads.</p>
+<p>So the job of a data team changes. It’s no longer to write the answers. It’s to build the layer that lets AI get the answers right. I think that layer has three parts now.</p>
+<h2 id="layer-1-the-modeled-data">Layer 1: the modeled data</h2>
+<p>This is the familiar part: raw tables cleaned into entities and facts, with tests, contracts, and one place each business concept lives. I use dbt.</p>
+<p>My first version wasn’t dbt. It was a set of reusable notebook components, one for bookings and one for relationships and so on, that every dashboard pulled from instead of re-deriving the logic. It taught me what a transformation layer is for. It also showed me its limits: no tests, no contracts, no review, and every fix depends on someone remembering where the logic lives. Moving that into dbt was the foundation for everything else.</p>
+<h2 id="layer-2-the-semantic-layer">Layer 2: the semantic layer</h2>
+<p>Clean tables still leave room to disagree. Two analysts and an agent can write three reasonable queries against the same table and get three different retention rates.</p>
+<p>A semantic layer settles that. Each metric is defined once, with its grain, filters and time logic, and every consumer reads that definition: a dashboard, an analyst or an agent. I built my group’s governed metric marts this way, so the question “what’s our rate?” has one answer no matter who or what asks it. This is the step that makes self-service safe instead of risky.</p>
+<h2 id="layer-3-the-context-layer">Layer 3: the context layer</h2>
+<p>Modeled, governed data still doesn’t tell an agent what the team knows: that a table has a gap last July, that one status word means three different things depending on who’s asking, that this exact question was answered six months ago and here’s how. When that knowledge lives in people’s heads, it leaves when they do, and every agent starts from zero.</p>
+<p>So I built a context layer. Nobody asked me to. It started on October 12 as a notes page. Four days later it was a reviewed git repo with an automated reviewer. Within about two weeks it was installed for the whole data department. I designed it, built it, and I still run it. That speed is the thesis in action: with AI doing the building, one person with a clear design can stand up real infrastructure in days.</p>
+<p>How it works:</p>
+<ul>
+<li><strong>A git repo written for people and AI.</strong> A page per project (what was asked, what we found, what we decided), a data guide of definitions and traps, and playbooks for recurring work.</li>
+<li><strong>Nobody browses it.</strong> Analysts use it through their AI assistant, which reads what the team knows at the start of a task and offers to write back what it learned at the end.</li>
+<li><strong>Every write is reviewed.</strong> Writebacks land as pull requests. Scripted checks run first: placement, required sections, and anything that looks like sensitive data. Then an AI reviewer checks evidence: shared facts need a source, a method and a date, and opinions can’t be stated as facts. Changes to the reviewer’s own rules always go to a person.</li>
+<li><strong>A steward keeps it clean.</strong> A scheduled job hunts for stale entries, duplicates and drift.</li>
+<li><strong>A toolkit on top.</strong> A plugin gives every analyst’s assistant the team’s methods: prepping a pull request, verifying a production query, building a dashboard, running an adversarial review, scoping a vague ticket.</li>
+</ul>
+<h2 id="ai-builds-the-layer-and-the-layer-keeps-ai-honest">AI builds the layer, and the layer keeps AI honest</h2>
+<p>This is the part I care about most. On my team, Claude Code writes the code. People shouldn’t be hand-writing models anymore. People oversee, and domain experts own the decisions the AI is making.</p>
+<p>That only works if the agent knows what your best analyst knows. Here’s how I think about getting it there:</p>
+<ol>
+<li><strong>Find the hot zones.</strong> Look at where the team’s queries actually go. A handful of tables (bookings, almost always) get touched constantly. Those are where the knowledge matters most and where the landmines hurt most.</li>
+<li><strong>Write down how to navigate them.</strong> For each hot table: which rows are real, which columns lie, which joins fan out, what changed and when. That’s the tribal knowledge that used to take a new analyst six months to absorb. It goes into the context layer as field guides and traps, each with evidence.</li>
+<li><strong>Give it to the agent.</strong> With that context loaded, an agent can build a model close to right on the first try, because it isn’t guessing where the landmines are.</li>
+<li><strong>Let the layer check the agent.</strong> Tests, contracts, lint and review gates are what make AI-written code safe to ship. When I cleaned up a large backlog of lint suppressions, the AI did the rewriting and a replay across millions of rows proved nothing changed. The guardrails are what turn “AI wrote it” into “we can trust it.”</li>
+</ol>
+<p>The payoff is that the knowledge stops belonging to whoever has been around longest. A new analyst’s assistant knows the traps on day one. That’s what democratizing data actually means.</p>
+<h2 id="what-ive-learned">What I’ve learned</h2>
+<ul>
+<li><strong>Context goes stale faster than code.</strong> Project pages said “in review” weeks after the work merged. That’s why the steward exists. Context needs an owner and a review loop, just like code.</li>
+<li><strong>Rules beat good intentions.</strong> The riskiest rules (no patient data, nothing copied from private notes) started as guidance. Now they’re scripted checks that fail the change outright.</li>
+<li><strong>The hardest part is people, not code.</strong> I seeded the context layer with months of prior work from several analytics teams so an analyst’s first session would already know their history. The tool can’t force the shift, but it can make the first win come fast. (More on the human side in <a href="/writing/give-analysts-their-thinking-time-back">Give analysts their thinking time back</a>.)</li>
+</ul>
+<h2 id="where-this-goes">Where this goes</h2>
+<p>None of this is specific to data. Every team working with AI has the same problem: the assistant doesn’t know how the team works. The same pattern of a reviewed memory plus a toolkit of the team’s methods can grow into one context layer per team, and eventually a written record of how the whole company works, built for the people and the AI who do the work.</p>
+<p>On the data side, the goal I’m working toward is a team that takes a new business area from first question to governed metrics and a working dashboard in under a week. AI does the building. People do the deciding, the aligning and the judgment.</p>
+<h2 id="if-youre-building-this">If you’re building this</h2>
+<ul>
+<li>Start with the hot zones. Write down what your best analyst knows about the tables everyone touches.</li>
+<li>Let AI write the code, and make tests, contracts and review the reason you can trust it.</li>
+<li>Define metrics once, in one place, before agents answer questions.</li>
+<li>Enforce the rules that matter with scripts, not reminders.</li>
+<li>Make the first win fast. Adoption follows the aha moment, not the announcement.</li>
+</ul>
+</div></article></main><footer class="mt-24 flex justify-between border-t border-[var(--line)] pt-6 font-mono text-[12px] text-[var(--faint)]"><span>hunterkleinschmidt.dev</span><a href="https://github.com/HunterKleinschmidt" class="transition-colors hover:text-[var(--fg)]">github</a></footer></div><script>
+      document.getElementById('theme-toggle')?.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      });
+    </script></body></html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en" class="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><title>You manage AI now | Hunter Kleinschmidt</title><meta name="description" content="When everyone can write code, the senior job is orchestrating AI. Model selection is the first call."><meta property="og:title" content="You manage AI now | Hunter Kleinschmidt"><meta property="og:description" content="When everyone can write code, the senior job is orchestrating AI. Model selection is the first call."><script>
+      const stored = localStorage.getItem('theme');
+      if (stored === 'light') document.documentElement.classList.remove('dark');
+    </script><link rel="stylesheet" href="/_astro/content.ePh_ubUe.css"></head><body class="font-sans"><div class="mx-auto max-w-[620px] px-6 pt-16 pb-24 sm:pt-24"><header class="mb-14 flex items-center justify-between font-mono text-[13px]"><a href="/" class="text-[var(--muted)] transition-colors hover:text-[var(--fg)]">@hunterkleinschmidt</a><nav class="flex items-center gap-5"><a href="/writing" class="transition-colors hover:text-[var(--fg)] text-[var(--fg)]">writing</a><a href="/built" class="transition-colors hover:text-[var(--fg)] text-[var(--muted)]">built</a><button id="theme-toggle" type="button" aria-label="Toggle light and dark mode" class="text-[var(--muted)] transition-colors hover:text-[var(--fg)]"><span class="dark:hidden">dark</span><span class="hidden dark:inline">light</span></button></nav></header><main><article><a href="/writing" class="font-mono text-[12px] text-[var(--faint)] transition-colors hover:text-[var(--fg)]">← writing</a><h1 class="mt-6 text-[28px] leading-tight font-medium tracking-tight">You manage AI now</h1><p class="mt-3 font-mono text-[12px] text-[var(--faint)]">nov 2026 · essay · orchestration</p><div class="prose prose-neutral mt-10 max-w-none text-[16px] leading-[1.8]"><h2 id="when-everyone-can-write-code">When everyone can write code</h2>
+<p>A year ago, building with AI took an engineer. Now a PM wires an LLM into a workflow in an afternoon, an analyst runs one over ten thousand notes from a notebook, and anyone can swap one model for another by changing a single line. Code is cheap. Judgment isn’t.</p>
+<p>That changes the senior job. You stop being the person who writes the most code and become the person who manages the AI that writes it. It’s the same skill as managing a team. You don’t do every task. You own the few calls that decide whether the work is any good, and you build cheap ways to check it.</p>
+<p>There are four calls I think every orchestrator owns:</p>
+<ol>
+<li><strong>Which model does the work.</strong></li>
+<li><strong>How you know the work is right:</strong> evals you can rerun, not one-off spot checks.</li>
+<li><strong>What the AI is allowed to decide</strong> and where a person has to step in.</li>
+<li><strong>What the AI knows about your business:</strong> the context you give it, so it isn’t guessing.</li>
+</ol>
+<p>Each one used to belong to a specialist. Now it gets made every day by whoever is building, so it has to become a shared skill with a simple framework behind it. This essay takes the first call.</p>
+<h2 id="the-first-call-which-model">The first call: which model</h2>
+<p>Most model choices are made by habit: the model the team already uses, the one that just launched, the one someone said was best. That works until it doesn’t, and when it doesn’t, nobody can say why the choice was made.</p>
+<p>I want model selection to be something a PM can do as well as an engineer: a simple framework and a cheap way to test it. This is mine.</p>
+<h2 id="three-axes">Three axes</h2>
+<p><strong>1. Speed.</strong> Is someone waiting on the output? If a person sits through the call, latency is friction, and the smaller, faster tiers get weighed first.</p>
+<p><strong>2. Reasoning.</strong> How much nuance and ambiguity does the task carry? Complex judgment, multi-step logic and storytelling push toward larger models.</p>
+<p><strong>3. Domain knowledge.</strong> What does the model already know about your domain before the prompt tells it anything?</p>
+<p>The first two get public benchmarks and launch-day charts. The third almost never does, because it’s specific to your domain, so nobody measures it. I think it’s the one teams most often get wrong.</p>
+<h2 id="a-models-knowledge-freezes-at-release">A model’s knowledge freezes at release</h2>
+<p>Domain knowledge comes from how a model was built: what it was pretrained on, how it was post-trained, and the engineering behind both. Then training ends, and the knowledge is fixed. A model learns nothing from being used. What changes over time is which model sits behind the name, when a lab ships a new version, and what we put around it: the prompt, retrieval, tools.</p>
+<p>That matters because prompts are never perfect. Every production prompt leaves gaps, and the model fills them with what it knows. In a domain whose rules change every year, like US healthcare billing, a model’s built-in knowledge goes stale on a schedule. A gap filled with last year’s rule produces a confident error that looks right.</p>
+<p>Prompts can make up the difference, but only for what they actually carry. Where a prompt is silent, the model’s own knowledge decides, and models differ a lot in what they know.</p>
+<h2 id="how-to-test-it-anyone-can-run-this">How to test it (anyone can run this)</h2>
+<ol>
+<li><strong>Write the questions from documents, not from a model.</strong> If a model writes the test, the test measures that model. Tie every question to a quoted sentence in a primary source, and check the quote mechanically.</li>
+<li><strong>Have more than one lab draft, then cross-check.</strong> Two vendors draft from the same passages, and each checks the other’s work against the source. Edits can change wording, never an answer or its quote.</li>
+<li><strong>Test closed book and open book.</strong> Closed book: the model answers from what it knows. Open book: the source is in the prompt. The gap tells you how much the model’s own knowledge is doing, and how much good context would replace it.</li>
+<li><strong>Compare models, not companies.</strong> Two tiers from one lab can differ more than flagships from two labs.</li>
+<li><strong>Grade with judges from more than one lab, and measure them.</strong> Check whether any judge favors its own lab’s models.</li>
+<li><strong>Cache everything and rerun on every release.</strong> Then a new model only needs its own answers run, and the test becomes a habit instead of a project.</li>
+</ol>
+<h2 id="what-i-found">What I found</h2>
+<p>I ran this on Medicare billing rules: 646 questions built from CMS rules, and six current models across both major labs’ flagship tiers. From memory, the models scored between 0.62 and 0.87. With the rule in the prompt, every one scored 0.94 or higher. The biggest single gap fell on a code whose description CMS had just changed. Full write-up: <a href="/writing/billing-knowledge-eval">the full write-up</a>.</p>
+<p>Two lessons carry past billing. First, the gap between tiers within one lab was bigger than the gap between labs, so “we’re a Claude shop” isn’t a model choice. Second, good context closed nearly all of the gap, which is the fourth call on the list above doing its job.</p>
+<h2 id="best-practices-id-hand-any-team">Best practices I’d hand any team</h2>
+<ul>
+<li><strong>Name the axis that matters before you pick.</strong> Is the constraint speed, reasoning or knowledge? Most bad choices skip this.</li>
+<li><strong>Assume the model doesn’t know your rules unless you’ve tested it.</strong> If a rule matters, put it in the prompt.</li>
+<li><strong>Watch the calendar.</strong> When your domain’s rules change, the model you picked last year may now be wrong in confident ways.</li>
+<li><strong>Test models, not brands.</strong></li>
+<li><strong>Make the test cheap to rerun.</strong> A bench that reruns from cache gets used. A one-off study gets cited once and forgotten.</li>
+<li><strong>Write down why you chose.</strong> The next person to swap the model should know what they’re giving up.</li>
+</ul>
+<h2 id="its-a-management-skill">It’s a management skill</h2>
+<p>Picking a model works a lot like hiring. You define the job before you look at candidates. You test for the skill the job actually needs, not the one on the résumé. You check again when the job changes. And you write down why you chose, so the next manager isn’t guessing.</p>
+<p>Managing AI well is mostly the same discipline: clear calls, cheap checks, decisions written down. Model selection is the first one. The other three (evals, decision rights, and context) are the next essays.</p>
+</div></article></main><footer class="mt-24 flex justify-between border-t border-[var(--line)] pt-6 font-mono text-[12px] text-[var(--faint)]"><span>hunterkleinschmidt.dev</span><a href="https://github.com/HunterKleinschmidt" class="transition-colors hover:text-[var(--fg)]">github</a></footer></div><script>
+      document.getElementById('theme-toggle')?.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      });
+    </script></body></html>

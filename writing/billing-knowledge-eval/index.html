@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="en" class="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><title>Do frontier models know US healthcare billing rules? | Hunter Kleinschmidt</title><meta name="description" content="A contamination-resistant eval of six frontier models on Medicare billing rules, closed book and open book."><meta property="og:title" content="Do frontier models know US healthcare billing rules? | Hunter Kleinschmidt"><meta property="og:description" content="A contamination-resistant eval of six frontier models on Medicare billing rules, closed book and open book."><script>
+      const stored = localStorage.getItem('theme');
+      if (stored === 'light') document.documentElement.classList.remove('dark');
+    </script><link rel="stylesheet" href="/_astro/content.ePh_ubUe.css"></head><body class="font-sans"><div class="mx-auto max-w-[620px] px-6 pt-16 pb-24 sm:pt-24"><header class="mb-14 flex items-center justify-between font-mono text-[13px]"><a href="/" class="text-[var(--muted)] transition-colors hover:text-[var(--fg)]">@hunterkleinschmidt</a><nav class="flex items-center gap-5"><a href="/writing" class="transition-colors hover:text-[var(--fg)] text-[var(--fg)]">writing</a><a href="/built" class="transition-colors hover:text-[var(--fg)] text-[var(--muted)]">built</a><button id="theme-toggle" type="button" aria-label="Toggle light and dark mode" class="text-[var(--muted)] transition-colors hover:text-[var(--fg)]"><span class="dark:hidden">dark</span><span class="hidden dark:inline">light</span></button></nav></header><main><article><a href="/writing" class="font-mono text-[12px] text-[var(--faint)] transition-colors hover:text-[var(--fg)]">← writing</a><h1 class="mt-6 text-[28px] leading-tight font-medium tracking-tight">Do frontier models know US healthcare billing rules?</h1><p class="mt-3 font-mono text-[12px] text-[var(--faint)]">oct 2026 · case study · evals</p><div class="prose prose-neutral mt-10 max-w-none text-[16px] leading-[1.8]"><h2 id="the-question">The question</h2>
+<p>A clinical documentation AI tool writes visit notes that later support insurance claims. Its prompt can’t spell out every billing rule. When it doesn’t, the model fills the gap from what it already knows. If one model knows US billing rules meaningfully better than another, that should count in choosing a model for the tool.</p>
+<p>So: how much do current frontier models differ in billing knowledge, and how does that compare with giving them the rule in the prompt?</p>
+<h2 id="scope">Scope</h2>
+<ul>
+<li><strong>Layer 1 (this study): rule knowledge.</strong> Questions about Medicare billing rules for the services the tool documents: community health integration, principal illness navigation, social determinants risk assessment, chronic care management, behavioral health integration, the G2211 complexity add-on, and office E/M visits.</li>
+<li><strong>Layer 2 (not yet run): applied work.</strong> Real notes scored against claim outcomes. That involves patient data, so it runs only inside the warehouse, on vendors covered for it.</li>
+</ul>
+<p>Layer 1 is a proxy. A model that knows the rules isn’t proven to write better notes, but a model that doesn’t know them has nothing to fall back on when the prompt is silent.</p>
+<h2 id="method">Method</h2>
+<ul>
+<li><strong>Sources:</strong> CY2021, CY2024, CY2025 and CY2026 Physician Fee Schedule final rules (Federal Register text), CMS Medicare Learning Network guides, a CMS FAQ, and AMA’s E/M guidance. Split into about 160 passages.</li>
+<li><strong>Drafting:</strong> two labs drafted questions from the same passages with the same prompt. Each item carries an exact supporting quote, checked mechanically against its passage.</li>
+<li><strong>Cross-checking:</strong> each lab’s items were checked against the other’s for contradictions, by code family. Edits could change wording or the rule year, never the answer or the quote. Items that needed a person to read the original page were held out.</li>
+<li><strong>Bank:</strong> about 650 items across three types: rule recall, denial risk, and code selection (pick the billable code and units, or say nothing is billable).</li>
+<li><strong>Models:</strong> six, across both labs’ flagship tiers: Claude Opus 5.5, Sonnet 5.5 and Haiku 5.5; GPT-6.1 Sol, GPT-6 Astra and GPT-6 Luna.</li>
+<li><strong>Modes:</strong> closed book (no source) and open book (source passage in the prompt).</li>
+<li><strong>Grading:</strong> code selection by exact match on code and units, against an “always says nothing” baseline. Everything else is scored by two judges, one from each lab, grading only against the key, scoring notes and quote. Splits go to human review.</li>
+</ul>
+<h3 id="a-trap-the-bench-caught">A trap the bench caught</h3>
+<p>Rules change every year. In the 2026 fee schedule, CMS kept code G0136 but changed what it describes, revised a community health integration descriptor, and expanded who can serve as auxiliary staff. A model trained mostly on earlier years will confidently state the old rule. Every item names its rule year so the model can’t fall back on “it depends”.</p>
+<h2 id="results-646-items-per-model-per-mode">Results (646 items per model per mode)</h2>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Closed book</th>
+<th>Open book</th>
+<th>Code selection, billable cases, closed book</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPT-6 Astra</td>
+<td>0.87</td>
+<td>0.98</td>
+<td>0.93</td>
+</tr>
+<tr>
+<td>GPT-6.1 Sol</td>
+<td>0.85</td>
+<td>0.98</td>
+<td>0.89</td>
+</tr>
+<tr>
+<td>Claude Opus 5.5</td>
+<td>0.81</td>
+<td>0.94</td>
+<td>0.85</td>
+</tr>
+<tr>
+<td>Claude Sonnet 5.5</td>
+<td>0.74</td>
+<td>0.95</td>
+<td>0.78</td>
+</tr>
+<tr>
+<td>GPT-6 Luna</td>
+<td>0.74</td>
+<td>0.97</td>
+<td>0.82</td>
+</tr>
+<tr>
+<td>Claude Haiku 5.5</td>
+<td>0.62</td>
+<td>0.95</td>
+<td>0.55</td>
+</tr>
+</tbody>
+</table>
+<p>Answering “nothing billable” every time scores 0.44 on code selection. At this size each overall score is within roughly 1.5 to 2 points.</p>
+<p>What it shows:</p>
+<ul>
+<li><strong>Domain knowledge differs between models.</strong> From memory, scores run from 0.62 to 0.87.</li>
+<li><strong>The biggest gap sits on the code CMS just changed.</strong> On G0136, GPT-6 Astra scores 0.85 and GPT-6.1 Sol 0.81, against 0.48 to 0.63 for the other four. Leave G0136 out and Opus is within about 3 points of Astra. Whether the gap sits in the 2026 items specifically is the next check.</li>
+<li><strong>Models, not companies.</strong> The gap between tiers within one lab (19 points for Claude, 13 for GPT) is bigger than the gap between labs.</li>
+<li><strong>Context closes most of it.</strong> With the rule in the prompt, every model scores 0.94 to 0.98.</li>
+<li><strong>Judges didn’t drive it.</strong> The two judges differed by 2 points or less on every model, and exact-match code selection, which needs no judge, gives nearly the same ordering.</li>
+</ul>
+<h2 id="soft-spots">Soft spots</h2>
+<ul>
+<li>One run, one domain, one day.</li>
+<li>Questions, not real work: knowing a rule isn’t the same as applying it inside a production system.</li>
+<li>Open book runs high by design, because each item was written from the passage the model is shown.</li>
+</ul>
+<h2 id="what-it-changed">What it changed</h2>
+<p>It turned a vague sense that “some models know healthcare better” into a number, and into a framework for talking about model selection that I wrote up for the company: speed, reasoning, and domain knowledge, with the reminder that a model’s knowledge freezes at release. The bench reruns from cache, so every new model release is a cheap test instead of a debate.</p>
+</div></article></main><footer class="mt-24 flex justify-between border-t border-[var(--line)] pt-6 font-mono text-[12px] text-[var(--faint)]"><span>hunterkleinschmidt.dev</span><a href="https://github.com/HunterKleinschmidt" class="transition-colors hover:text-[var(--fg)]">github</a></footer></div><script>
+      document.getElementById('theme-toggle')?.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      });
+    </script></body></html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang="en" class="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><title>AI doesn&#39;t have bad days | Hunter Kleinschmidt</title><meta name="description" content="For high-volume judgment work, AI is better than people. When it isn’t, the gap is context."><meta property="og:title" content="AI doesn't have bad days | Hunter Kleinschmidt"><meta property="og:description" content="For high-volume judgment work, AI is better than people. When it isn’t, the gap is context."><script>
+      const stored = localStorage.getItem('theme');
+      if (stored === 'light') document.documentElement.classList.remove('dark');
+    </script><link rel="stylesheet" href="/_astro/content.ePh_ubUe.css"></head><body class="font-sans"><div class="mx-auto max-w-[620px] px-6 pt-16 pb-24 sm:pt-24"><header class="mb-14 flex items-center justify-between font-mono text-[13px]"><a href="/" class="text-[var(--muted)] transition-colors hover:text-[var(--fg)]">@hunterkleinschmidt</a><nav class="flex items-center gap-5"><a href="/writing" class="transition-colors hover:text-[var(--fg)] text-[var(--fg)]">writing</a><a href="/built" class="transition-colors hover:text-[var(--fg)] text-[var(--muted)]">built</a><button id="theme-toggle" type="button" aria-label="Toggle light and dark mode" class="text-[var(--muted)] transition-colors hover:text-[var(--fg)]"><span class="dark:hidden">dark</span><span class="hidden dark:inline">light</span></button></nav></header><main><article><a href="/writing" class="font-mono text-[12px] text-[var(--faint)] transition-colors hover:text-[var(--fg)]">← writing</a><h1 class="mt-6 text-[28px] leading-tight font-medium tracking-tight">AI doesn&#39;t have bad days</h1><p class="mt-3 font-mono text-[12px] text-[var(--faint)]">nov 2026 · essay · ai systems</p><div class="prose prose-neutral mt-10 max-w-none text-[16px] leading-[1.8]"><p>Okay, it has 529s. Anyone who has watched a batch job fill up with “overloaded” errors knows the API has bad days. The model doesn’t.</p>
+<h2 id="my-position">My position</h2>
+<p>For high-volume judgment work (reviewing timesheets, investigating complaints, auditing notes), AI is better than people. It’s more consistent, it reads every case in full, and it applies the same standard to the ten-thousandth case as to the first. It doesn’t fade after lunch or go easy on a Friday.</p>
+<p>The only serious argument against this is that people handle ambiguity better. I think that argument is really about context. If a human reviewer makes a better call than your model, it’s because the human knows something the model doesn’t: the policy exception, the history with this person, what “normal” looks like for this role. Give the model that context and the gap closes. If it doesn’t close, your pipeline isn’t good enough yet. That’s an engineering gap, not an AI gap.</p>
+<p>I’ve spent most of the last two years building the systems that prove this.</p>
+<h2 id="two-systems-the-company-runs-on">Two systems the company runs on</h2>
+<h3 id="workforce-quality-assurance">Workforce quality assurance</h3>
+<p>I designed and built, and still own, the primary quality assurance system for a large provider workforce. It runs against the entire population, not a sample.</p>
+<ul>
+<li>Every provider’s activity is evaluated against the company’s quality standards on a regular schedule.</li>
+<li>When something goes wrong, like a missed session or negative patient feedback, an AI investigator reads that provider’s full relationship history (messages, calls, notes, care plans, support tickets) and writes up the evidence. A human doing this would skim. The model reads everything, every time.</li>
+<li>Issues become flags. At three flags, the system issues a strike automatically, and a person reviews it before it stands.</li>
+<li>I own the decision logic, the investigator prompts, and the exemptions, and I’ve led it through three major versions.</li>
+</ul>
+<p>Before this existed, the work took a team of reviewers and still only covered the cases someone had time for. Now every case gets the full read.</p>
+<h3 id="billing-integrity">Billing integrity</h3>
+<p>I architected the primary billing integrity system: the one that checks every timesheet submission providers make, every weekday.</p>
+<p>This is the data science-heavy one:</p>
+<ul>
+<li><strong>Reading the notes.</strong> An LLM classifies the free text of every submission: what kind of work it describes and whether the time claimed fits that work. That’s semantic analysis at a scale no review team could match.</li>
+<li><strong>Baselines per person, not just per population.</strong> Statistical norms for how long each kind of work usually takes, and for each provider’s own patterns, so the system can tell “unusual for everyone” apart from “unusual for this person.”</li>
+<li><strong>A decision matrix, not a single score.</strong> The model’s classification and the statistical signals come together in a rules matrix that decides what gets escalated. Each rule is plain enough for operations to read and challenge.</li>
+<li><strong>Built as a guardrail, not a ranking.</strong> It surfaces what’s unusual and sends it to a person. It never scores anyone as a good or bad provider, because the moment an outlier detector becomes a leaderboard, people start optimizing against it.</li>
+<li><strong>Model choice on evidence.</strong> I reclassified the full submission history with candidate models and picked the winner through blind adjudication. The faster model also won most of the disputes.</li>
+<li><strong>Validated against experts.</strong> Operations reviewers checked its calls, agreed strongly, and endorsed every escalation.</li>
+</ul>
+<p>It later moved upstream into real-time checks that catch problems before a timesheet is even submitted. I wrote the detection plan, thresholds, data contract, and test cases that engineering built from.</p>
+<h2 id="why-consistent-beats-careful">Why consistent beats careful</h2>
+<p>AI does make mistakes. The advantage isn’t that it’s always right. It’s that its mistakes are consistent, so you can find a cause and fix it once, for every future case.</p>
+<p>When human reviewers disagree, there’s no code to fix. You retrain, re-audit, and hope. When a model is wrong, it’s wrong the same way every time, so the pattern shows up in the data. Three real examples:</p>
+<ul>
+<li><strong>A model that obeyed too well.</strong> We had to move to a new model under a hard deprecation deadline, and it disagreed with production more than expected. It looked like hallucination. It wasn’t: the new model was following contradictions in our prompt literally, where the old one had smoothed them over. The fix was the prompt. We treated the gap as a list of specific fixes, not a go/no-go decision, and closed most of it before cutover.</li>
+<li><strong>Overturns that weren’t the model’s fault.</strong> When people disputed outcomes and won, I traced why. Most overturns came from gaps in the deterministic logic around the model, not from its judgment. Every one was fixable, and each fix was context the model had been missing.</li>
+<li><strong>Two systems, one event.</strong> Two separate AI pipelines could each penalize the same incident. I audited every path across three codebases, reviewed every past collision by hand, and we adopted one rule: one event, one penalty. Guards in both pipelines now catch nearly all historical collisions on replay.</li>
+</ul>
+<p>A human review team would have buried all three inside individual judgment calls. The AI system put them in plain view, and every fix made the system permanently better. That’s the engineering gap closing.</p>
+<h2 id="the-guardrails-are-the-job">The guardrails are the job</h2>
+<p>The model is the easy part. Trust comes from the system around it:</p>
+<ul>
+<li><strong>Plain rules before the model.</strong> Anything that should never depend on judgment (approved leave, platform outages, cases outside the policy window) is handled in deterministic logic before a model sees the case.</li>
+<li><strong>The AI investigates; people confirm.</strong> Automated strikes get human review, and there’s an appeal path.</li>
+<li><strong>Evidence you can audit.</strong> Every decision keeps a snapshot of exactly what the model saw.</li>
+<li><strong>Prompts are code.</strong> Versioned, tested and reviewed like code.</li>
+<li><strong>Migrations measured against production.</strong> A new model has to be shown no worse on the cases that matter.</li>
+<li><strong>A review standard for person-affecting logic.</strong> Any change that decides something about a person gets an invariant review before it merges.</li>
+</ul>
+<h2 id="ais-own-bad-days">AI’s own bad days</h2>
+<p>The 529s are a joke with a serious side. AI systems fail in their own ways, and you design for them:</p>
+<ul>
+<li><strong>Silent stalls.</strong> One batch pipeline stopped writing results for about two weeks, and nothing alerted. Now long jobs report a heartbeat, have hard timeouts, and resume where they stopped.</li>
+<li><strong>Measurement that lies.</strong> One system looked several times less effective than it was, because of how detections were counted. The dashboard was wrong, not the AI.</li>
+<li><strong>AI judging AI.</strong> When AI helps write the notes that other AI checks, the baseline can drift. If generated notes get more uniform, the detector’s idea of “normal” moves with them. I built monitoring for exactly that.</li>
+<li><strong>Outages.</strong> Retries, backoff and resumable runs for anything that matters.</li>
+</ul>
+<h2 id="if-youre-building-this">If you’re building this</h2>
+<ul>
+<li>Pick work that’s high-volume, rule-based and inconsistent today. That’s where AI wins clearly.</li>
+<li>When a human beats your model, find the context the human had and give it to the model.</li>
+<li>Put plain logic in front of the model. Don’t make it decide what a rule can decide.</li>
+<li>Treat every overturn and disagreement as a fixable cause.</li>
+<li>Design for AI’s own failure modes from day one.</li>
+</ul>
+<p>The point is that every case gets the full, consistent read only the lucky ones used to get, and the people who did this work get to spend their judgment on the cases that really need it.</p>
+</div></article></main><footer class="mt-24 flex justify-between border-t border-[var(--line)] pt-6 font-mono text-[12px] text-[var(--faint)]"><span>hunterkleinschmidt.dev</span><a href="https://github.com/HunterKleinschmidt" class="transition-colors hover:text-[var(--fg)]">github</a></footer></div><script>
+      document.getElementById('theme-toggle')?.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      });
+    </script></body></html>
