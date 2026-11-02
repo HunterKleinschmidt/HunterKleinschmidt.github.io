@@ -20,11 +20,11 @@
 <p>Before this existed, the work took a team of reviewers and still only covered the cases someone had time for. Now every case gets the full read.</p>
 <h3 id="billing-integrity">Billing integrity</h3>
 <p>I built the primary billing integrity system: the one that checks every timesheet submission providers make, every weekday.</p>
-<p>This is the data science-heavy one:</p>
+<p>It’s a rules-based decision matrix, and it’s the data science-heavy one:</p>
 <ul>
-<li><strong>Reading the notes.</strong> An LLM classifies the free text of every submission: what kind of work it describes and whether the time claimed fits that work. That’s semantic analysis at a scale no review team could match.</li>
+<li><strong>A decision matrix, not a single score.</strong> Every escalation comes from a rules matrix that combines statistical signals with what the notes say. Each rule is plain enough for operations to read and challenge, so every flag traces back to a reason.</li>
 <li><strong>Baselines per person, not just per population.</strong> Statistical norms for how long each kind of work usually takes, and for each provider’s own patterns, so the system can tell “unusual for everyone” apart from “unusual for this person.”</li>
-<li><strong>A decision matrix, not a single score.</strong> The model’s classification and the statistical signals come together in a rules matrix that decides what gets escalated. Each rule is plain enough for operations to read and challenge.</li>
+<li><strong>An LLM reading every note.</strong> One input to the matrix is an LLM classification of the free text of every submission: what kind of work it describes and whether the time claimed fits that work. That’s semantic analysis at a scale no review team could match.</li>
 <li><strong>Built as a guardrail, not a ranking.</strong> It surfaces what’s unusual and sends it to a person. It never scores anyone as a good or bad provider, because the moment an outlier detector becomes a leaderboard, people start optimizing against it.</li>
 <li><strong>Model choice on evidence.</strong> I reclassified the full submission history with candidate models and picked the winner through blind adjudication. The faster model also won most of the disputes.</li>
 <li><strong>Validated against experts.</strong> Operations reviewers checked its calls, agreed strongly, and endorsed every escalation.</li>
