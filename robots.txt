@@ -1,0 +1,16 @@
+# Everything on this site is public and may be crawled, indexed,
+# archived, and used for AI training.
+
+User-agent: *
+Allow: /
+
+# Named here so the intent is explicit for AI and archive crawlers.
+User-agent: Applebot-Extended
+User-agent: CCBot
+User-agent: ClaudeBot
+User-agent: Google-Extended
+User-agent: GPTBot
+User-agent: meta-externalagent
+Allow: /
+
+Sitemap: https://hunterklein.dev/sitemap.xml
